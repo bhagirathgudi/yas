@@ -1,0 +1,2 @@
+# yas
+Yet another Scaffolder
