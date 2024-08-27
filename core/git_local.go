@@ -2,7 +2,7 @@ package main
 
 import (
     "github.com/go-git/go-git/v5"
-    "github.com/go-git/go-git/v5/config"
+    "github.com/go-git/go-git/v5/plumbing"
     "github.com/go-git/go-git/v5/plumbing/transport/http"
     "log"
     "os"
@@ -26,7 +26,16 @@ func PerformCloneAndInit(cloneUrl string) *git.Repository {
 }
 
 func CreateBranch(name string, repo *git.Repository) {
-	err := repo.CreateBranch(&config.Branch{Name: name})
+	branchRefName := plumbing.NewBranchReferenceName(name)
+	w, err := repo.Worktree()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = w.Checkout(&git.CheckoutOptions{
+		Branch: branchRefName,
+		Force:  true,
+		Create: true,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
