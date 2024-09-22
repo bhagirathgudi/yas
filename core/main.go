@@ -7,6 +7,9 @@ import (
     "strings"
 )
 
+const (
+	DefaultTemplateType = "GITLAB"
+)
 func main() {
 	//Create tmp directory
 	dir := CreateAndChngeDir()
@@ -16,6 +19,8 @@ func main() {
 	//Create a branch
 	branchPrefixes := []string{"scaffold", CreateRandomString(5)}
 	CreateBranch(strings.Join(branchPrefixes, "-"), repo)
+	//Load the plugin
+	pluginName := os.Getenv("TEMPLATE_SRC_TYPE") ?: DefaultTemplateType
 	//Download template/templates
 	//Replace place holders
 	//Perform git commit and push
